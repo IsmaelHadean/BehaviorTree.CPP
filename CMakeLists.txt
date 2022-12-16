@@ -18,12 +18,12 @@ endif()
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 #---- project configuration ----
-option(BUILD_EXAMPLES   "Build tutorials and examples" ON)
-option(BUILD_UNIT_TESTS "Build the unit tests" ON)
-option(BUILD_TOOLS "Build commandline tools" ON)
+option(BUILD_EXAMPLES   "Build tutorials and examples" OFF)
+option(BUILD_UNIT_TESTS "Build the unit tests" OFF)
+option(BUILD_TOOLS "Build commandline tools" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
-option(BUILD_MANUAL_SELECTOR "Build manual selector node" ON)
-option(ENABLE_COROUTINES "Enable boost coroutines" ON)
+option(BUILD_MANUAL_SELECTOR "Build manual selector node" OFF)
+option(ENABLE_COROUTINES "Enable boost coroutines" OFF)
 
 #---- Include boost to add coroutines ----
 if(ENABLE_COROUTINES)
@@ -98,20 +98,6 @@ elseif( CATKIN_DEVEL_PREFIX OR CATKIN_BUILD_BINARY_PACKAGE)
         LIBRARIES ${BEHAVIOR_TREE_LIBRARY}
         CATKIN_DEPENDS roslib
         )
-
-elseif(BUILD_UNIT_TESTS)
-    if(${CMAKE_VERSION} VERSION_LESS "3.11.0")
-        find_package(GTest REQUIRED)
-    else()
-        include(FetchContent)
-        FetchContent_Declare(
-            googletest
-            URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
-            )
-        # For Windows: Prevent overriding the parent project's compiler/linker settings
-        set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-        FetchContent_MakeAvailable(googletest)
-    endif()
 endif()
 
 
@@ -325,13 +311,4 @@ else()
     )
 endif()
 
-
 ######################################################
-# EXAMPLES and TOOLS
-if(BUILD_TOOLS)
-    add_subdirectory(tools)
-endif()
-
-if(BUILD_EXAMPLES)
-    add_subdirectory(examples)
-endif()
